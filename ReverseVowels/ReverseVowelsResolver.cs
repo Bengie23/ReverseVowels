@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ReverseVowels
 {
+    /// <summary>
+    /// Returns a given string with reversed vowels.
+    /// </summary>
     public class ReverseVowelsResolver
     {
         private Stack<char> vowelsFound = new Stack<char>();
         private string stringToEvaluate;
-        private char[] vowels = { 'a','e','i','o','u' };
 
-        internal ReverseVowelsResolver(string stringParameter)
+        private ReverseVowelsResolver(string stringParameter)
         {
             if (stringParameter is null)
             {
                 throw new ArgumentNullException();
             }
 
-            this.stringToEvaluate = stringParameter;
+            stringToEvaluate = stringParameter;
         }
 
-        internal string TryResolve()
+        private string TryResolve()
         {
             char[] arrayOfChar = stringToEvaluate.ToCharArray();
 
@@ -29,10 +30,9 @@ namespace ReverseVowels
                 return new string(arrayOfChar);
             }
 
-
             var result = arrayOfChar.Select(x =>
              {
-                 if (IsVowel(x))
+                 if (x.IsVowel())
                  {
                      return vowelsFound.Pop();
                  }
@@ -45,9 +45,9 @@ namespace ReverseVowels
             return new string(result);
         }
 
-        internal bool EvaluateIsVowelAndStore(char c)
+        private bool EvaluateIsVowelAndStore(char c)
         {
-            bool isVowel = IsVowel(c);
+            bool isVowel = c.IsVowel();
             if (isVowel)
             {
                 vowelsFound.Push(c);
@@ -55,20 +55,16 @@ namespace ReverseVowels
             return isVowel;
         }
 
-        internal bool IsVowel(char c)
-        {
-            char value = c.ToString().ToLower()[0];
-            return vowels.Contains(value);
-
-            
-        }
-
+        /// <summary>
+        /// Entry point for resolver. Creates a new instance of resolver and returns the resolved value.
+        /// </summary>
+        /// <param name="stringParameter"></param>
+        /// <returns></returns>
         public static string Resolve(string stringParameter)
         {
             var resolvable = new ReverseVowelsResolver(stringParameter);
 
             return resolvable.TryResolve();
-
         }
     }
 }
